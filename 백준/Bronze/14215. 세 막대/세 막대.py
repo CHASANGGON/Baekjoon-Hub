@@ -1,10 +1,2 @@
-lst=list(map(int,input().split()))
-lst_set=set(lst)
-if len(lst_set) == 1:
-    print(lst[0]*3)
-else:
-    lst.sort()
-    dif = lst[2] - lst[0] - lst[1]
-    if dif >= 0:
-        lst[2] = lst[2] - dif - 1 
-    print(lst[0]+lst[1]+lst[2])
+lst = sorted(map(int,input().split()))
+print(lst[0]+lst[1]+min(lst[2],lst[0]+lst[1]-1))
