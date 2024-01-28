@@ -1,10 +1,7 @@
-import sys
 input()
-lst_n = list(set(map(int,sys.stdin.readline().split())))
-lst_n.sort()
+lst_n = set(map(int,input().split()))
 input()
-lst_m = list(map(int,sys.stdin.readline().split()))
-
+lst_m = list(map(int,input().split()))
 
 for m in lst_m:
     if m in lst_n:
