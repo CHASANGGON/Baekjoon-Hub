@@ -21,7 +21,6 @@ while start <= end:
 
     if thr >= m:
         end = mid -1
-        ans = min(ans, mid)
         # 예제 입력 1의 경우 mid = 28 이었다가
         # end = mid - 1 = 27-> mid = (start + end)//2 = 27 로 감소시키는 경우
         # 조건을 만족시키지 못 하고, 그 때의 mid 값을 출력(오답)
@@ -30,4 +29,4 @@ while start <= end:
     else:
         start = mid + 1
 
-print(ans)
+print(start)
