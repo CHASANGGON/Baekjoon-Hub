@@ -4,7 +4,6 @@ def in_range(ni,nj):
 def dfs():    
     while stack:
         i, j = stack.pop()
-        arr[i][j] = 0 # 방문 표시
         
         for k in range(4): # 델타 탐색
             
@@ -12,6 +11,7 @@ def dfs():
             nj = j + dj[k]
             
             if in_range(ni,nj) and arr[ni][nj]: # 인덱스 검사 및 배추(1) 검사
+                arr[ni][nj] = 0
                 stack.append([ni,nj])
     
 import sys
@@ -33,6 +33,7 @@ for _ in range(1,t+1):
     for i in range(N):
         for j in range(M):
             if arr[i][j]:
+                arr[i][j] = 0
                 cnt += 1
                 stack = [[i,j]]
                 dfs()
