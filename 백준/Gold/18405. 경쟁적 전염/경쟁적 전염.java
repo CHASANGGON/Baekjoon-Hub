@@ -31,17 +31,16 @@ public class Main {
         X = Integer.parseInt(SXY[1]);
         Y = Integer.parseInt(SXY[2]);
 
-        // 목표 좌표에 이미 바이러스가 있으면 그 번호를 바로 출력하고 종료
-        if (testTube[X - 1][Y - 1] != 0) { // 바이러스 번호가 이미 존재하면
-            System.out.print(testTube[X - 1][Y - 1]);
-            return; // 조기 종료
+        if (testTube[X-1][Y-1] > 0) {
+            System.out.println(testTube[X-1][Y-1]);
+            return;
         }
-
-        // 바이러스가 없는 경우
+        
+        // 실행
         ArrayList<Integer> result = new ArrayList<>();
         coordinates = new LinkedList<>();
         coordinates.offer(new int[]{X - 1, Y - 1}); // 관심 대상 좌표에서 역으로 출발
-        testTube[X - 1][Y - 1] = -1; // 해당 좌표를 기록(전염 시작점)
+        testTube[X - 1][Y - 1] = -1;
 
         while (S-- > 0) { // S초 실행
             size = coordinates.size();
@@ -51,28 +50,29 @@ public class Main {
                     ni = now[0] + d[0];
                     nj = now[1] + d[1];
                     if (indexCheck(ni, nj)) {
-                        if (testTube[ni][nj] == 0) { // 아직 전염되지 않았다면
+                        if (testTube[ni][nj] == 0) { // 아직 감염되지 않았다면
                             testTube[ni][nj] = -1; // 지나온 것을 기록
                             coordinates.offer(new int[]{ni, nj}); // 추가
-                        } else if (testTube[ni][nj] > 0) { // 바이러스가 존재한다면 -> 해당 위치에서 출발한 바이러스가 목표 지점을 전염 시킬 수 있다는 것
+                        } else if (testTube[ni][nj] > 0) { // 바이러스가 존재한다면 -> 해당 위치에서 출발한 바이러스가 목표 지점을 감염 시킬 수 있다는 것
                             result.add(testTube[ni][nj]); // 바이러스 번호를 추가
                         }
                     }
+
                 }
             }
 
             // 1초가 지날 때 마다 조기 종료 체크
             if (result.size() > 0) {
-                int virus = 1001; // 바이러스는 1 ~ 1000번
+                int min = 1001; // 바이러스는 1 ~ 1000번
                 for (int a : result) {
-                    virus = Math.min(a, virus);
+                    min = Math.min(a, min);
                 }
-                System.out.println(virus);
-                return; // 종료
+                System.out.println(min);
+                return;
             }
         }
 
-        // 끝까지 전염되지 않았으면 0을 출력
+        // 전염디지 않았으면 0을 출력
         System.out.println(0);
     }
 
