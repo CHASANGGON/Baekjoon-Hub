@@ -3,9 +3,9 @@ import java.util.*;
 
 public class Main {
     private static StringTokenizer st;
-    private static int virus, N, K, S, X, Y, i, j, ni, nj;
-    private static int[] di = {1, -1, 0, 0};
-    private static int[] dj = {0, 0, 1, -1};
+    private static int size, virus, N, K, S, X, Y, i, j, ni, nj;
+    private static final int[] di = {1, -1, 0, 0};
+    private static final int[] dj = {0, 0, 1, -1};
     private static int[] coordinates;
     private static int[][] testTube;
     private static Queue<int[]> virusCoordinates, tempVirueCoordinates; // 메모리 효율성을 위해 클래스 생성없이 배열 자료형 사용
@@ -48,8 +48,9 @@ public class Main {
 
         // S초 실행
         tempVirueCoordinates = new LinkedList<>(); // 1초 동안의 실행을 위해 임시 저장용 Queue
-        while (S > 0) {
-            while (!virusCoordinates.isEmpty()) {
+        while (S-- > 0) {
+            size = virusCoordinates.size();
+            while (size-- > 0) {
                 coordinates = virusCoordinates.poll();
                 i = coordinates[0];
                 j = coordinates[1];
@@ -62,16 +63,22 @@ public class Main {
                     }
                 }
             }
+
+            if (testTube[X - 1][Y - 1] > 0) {
+                System.out.println(testTube[X - 1][Y - 1]);
+                return;
+            }
+
             // 첫 실행 이후부터는 우선순위 Queue 사용하지 않아도 된다.
             // 처음에 우선순위를 사용해서 바이러스를 전염시켰으므로
             // 이후부터는 순서대로 꺼내기만 해도 우선순위대로 꺼내진다.
             // 우선순위 큐는 O(logN) > 링크드리스트는 O(1)
             // 따라서 시간복잡도가 높은 우선순위 큐를 굳이 계속 사용할 이유가 없다
             virusCoordinates = new LinkedList<>();
-            while (!tempVirueCoordinates.isEmpty()) {
+            size = tempVirueCoordinates.size();
+            while (size-- > 0) {
                 virusCoordinates.offer(tempVirueCoordinates.poll());
             }
-            S--;
         }
 
         System.out.println(testTube[X - 1][Y - 1]);
