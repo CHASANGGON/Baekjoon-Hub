@@ -3,22 +3,22 @@ import java.util.*;
 
 public class Main {
     public static void main(String[] args) throws IOException {
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        FastReader reader = new FastReader();
+        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
 
-        // N 입력 받기
-        int N = Integer.parseInt(br.readLine());
+        int N = reader.nextInt();
         int[][] xy = new int[N][2];
 
-
-        // 선 입력 받기
+        // 입력 최적화
         for (int i = 0; i < N; i++) {
-            StringTokenizer st = new StringTokenizer(br.readLine());
-            xy[i][0] = Integer.parseInt(st.nextToken());
-            xy[i][1] = Integer.parseInt(st.nextToken());
+            xy[i][0] = reader.nextInt();
+            xy[i][1] = reader.nextInt();
         }
 
-        Arrays.sort(xy, Comparator.comparingInt(a -> a[0]));
+        // 정렬 최적화 (멀티스레딩 활용)
+        Arrays.parallelSort(xy, Comparator.comparingInt(a -> a[0]));
 
+        // 선분 합치기
         int ans = 0;
         int[] before = {xy[0][0], xy[0][1]};
         for (int i = 1; i < N; i++) {
@@ -26,7 +26,7 @@ public class Main {
             int end = xy[i][1];
 
             if (before[1] < front) { // 끊기는 경우
-                ans += (before[1] - before[0]); // 지금까지의 길이 누적합
+                ans += (before[1] - before[0]); // 지금까지의 길이 누적
                 before[0] = front;
                 before[1] = end;
             } else { // 이어지는 경우
@@ -34,6 +34,44 @@ public class Main {
             }
         }
 
-        System.out.println(ans + before[1] - before[0]);
+        // 최종 출력 최적화
+        bw.write(ans + (before[1] - before[0]) + "\n");
+        bw.flush();
+    }
+
+    // 빠른 입력 클래스
+    static class FastReader {
+        final int SIZE = 1 << 15;
+        byte[] buffer = new byte[SIZE];
+        int index, size;
+        InputStream in;
+
+        FastReader() {
+            in = System.in;
+        }
+
+        int nextInt() throws IOException {
+            int n = 0;
+            byte c;
+            while ((c = read()) <= 32);
+            boolean neg = (c == '-');
+            if (neg) c = read();
+            do {
+                n = (n << 3) + (n << 1) + (c & 15);
+            } while (isNumber(c = read()));
+            return neg ? -n : n;
+        }
+
+        boolean isNumber(byte c) {
+            return 47 < c && c < 58;
+        }
+
+        byte read() throws IOException {
+            if (index == size) {
+                size = in.read(buffer, index = 0, SIZE);
+                if (size < 0) buffer[0] = -1;
+            }
+            return buffer[index++];
+        }
     }
 }
