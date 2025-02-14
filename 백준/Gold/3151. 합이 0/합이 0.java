@@ -45,7 +45,8 @@ public class Main {
                 if (arr[l] == arr[r]) { // 두 수가 같다면, 그 사이 모든 수가 같다는 의미
                     cnt += (r - l + 1) * (r - l) / 2; // nC2 조합만큼 가능
                     return;
-                } else { // 그렇지 않다면, 근처에 같은 값을 찾는 만큼 조합 가능
+                    
+                } else { // 그렇지 않다면, while문을 벗어날 때까지 가능한 경우의 수를 모두 탐색
                     int additionalL = l;
                     int additionalR = r;
 
