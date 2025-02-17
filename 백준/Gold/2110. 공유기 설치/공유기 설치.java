@@ -23,7 +23,7 @@ public class Main {
         Arrays.sort(arr);
 
         // 탐색
-        int min = 1, max = arr[N - 1] / (C - 1);
+        int min = 1, max = arr[N - 1] - arr[0] / (C - 1);
         while (min <= max) {
             int length = (min + max) / 2;
 
