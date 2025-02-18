@@ -34,27 +34,27 @@ public class Main {
 
         // 탐색
         while (min <= max) {
-            int length = (min + max) / 2;
+            int dis = (min + max) / 2;
 
-            if (check(length) < 0) {
-                min = length + 1;
+            if (check(dis) < 0) {
+                min = dis + 1;
             } else {
-                max = length - 1;
+                max = dis - 1;
             }
         }
 
         System.out.println(max + 1);
     }
 
-    private static int check(int length) {
+    private static int check(int dis) {
 
         int cnt = M;
         int before = 0;
 
         for (int i = 0; i < N + 1; i++) {
-            while (before + length < arr[i]) {
+            while (before + dis < arr[i]) {
                 cnt--; // 설치
-                before += length;
+                before += dis;
             }
             before = arr[i];
         }
