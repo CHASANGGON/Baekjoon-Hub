@@ -1,5 +1,4 @@
 import java.io.*;
-import java.util.*;
 
 public class Main {
     private static long[] dp;
@@ -22,9 +21,12 @@ public class Main {
         }
 
         // 출력
+        StringBuilder sb = new StringBuilder();
         for (int i = 0; i < T; i++) {
             int N = Integer.parseInt(br.readLine());
-            System.out.println(dp[N]);
+            sb.append(dp[N]).append("\n");
         }
+
+        System.out.println(sb);
     }
 }
