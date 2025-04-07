@@ -3,7 +3,7 @@ import java.util.*;
 
 
 public class Main {
-    static int A, B, numCopy, numS, numD, numL, numR;
+    static int A, B;
 
     static class Node {
         int num;
@@ -24,6 +24,8 @@ public class Main {
         // 테스트 케이스
         while (T-- > 0) {
             StringTokenizer st = new StringTokenizer(br.readLine());
+
+            // 입력 받기
             A = Integer.parseInt(st.nextToken());
             B = Integer.parseInt(st.nextToken());
 
@@ -35,9 +37,8 @@ public class Main {
 
     //** BFS를 통해서 B를 찾아가는 최소 횟수를 출력하고 종료하는 함수 **/
     private static void bfs() {
-        boolean[] visited = new boolean[10000]; // 방문 체크 추가
+        boolean[] visited = new boolean[10000]; // 수는 최대 네 자릿수 -> 10000개의 배열로 체크 가능
         Queue<Node> queue = new LinkedList<>();
-
         queue.offer(new Node(A, ""));
         visited[A] = true;
 
@@ -45,63 +46,43 @@ public class Main {
             Node node = queue.poll();
 
             int num = node.num;
-            String dslr = node.commands;
+            String commands = node.commands;
 
             // 종료 조건
             if (num == B) {
-                System.out.println(dslr);
+                System.out.println(commands);
                 return;
             }
 
 
             // D: *2 (+ % 10000)
-            numD = num * 2;
-            if (numD > 9999) numD %= 10000;
-            if (!visited[numD]) {
-                visited[numD] = true;
-                queue.offer(new Node(numD, dslr + "D"));
+            int d = num * 2;
+            if (d > 9999) d %= 10000;
+            if (!visited[d]) {
+                visited[d] = true;
+                queue.offer(new Node(d, commands + "D"));
             }
             // S: -1 (0 -> 9999)
-            numS = num - 1;
-            if (numS == -1) numS = 9999;
-            if (!visited[numS]) {
-                visited[numS] = true;
-                queue.offer(new Node(numS, dslr + "S"));
+            int s = num - 1;
+            if (s == -1) s = 9999;
+            if (!visited[s]) {
+                visited[s] = true;
+                queue.offer(new Node(s, commands + "S"));
             }
 
             // L: ←
-            numCopy = num;
-            int num1 = (int) numCopy / 1000;
-            numCopy %= 1000;
-            int num2 = (int) numCopy / 100;
-            numCopy %= 100;
-            int num3 = (int) numCopy / 10;
-            numCopy %= 10;
-            int num4 = numCopy;
-
-            numL = 1000 * num2 + 100 * num3 + 10 * num4 + num1;
-            if (!visited[numL]) {
-                visited[numL] = true;
-                queue.offer(new Node(numL, dslr + "L"));
+            int l = (num % 1000) * 10 + (num / 1000);
+            if (!visited[l]) {
+                visited[l] = true;
+                queue.offer(new Node(l, commands + "L"));
             }
 
             // R: →
-            numCopy = num;
-            num1 = (int) numCopy / 1000;
-            numCopy %= 1000;
-            num2 = (int) numCopy / 100;
-            numCopy %= 100;
-            num3 = (int) numCopy / 10;
-            numCopy %= 10;
-            num4 = numCopy;
-
-            numR = 1000 * num4 + 100 * num1 + 10 * num2 + num3;
-
-            if (!visited[numR]) {
-                visited[numR] = true;
-                queue.offer(new Node(numR, dslr + "R"));
+            int r = (num % 10) * 1000 + (num / 10);
+            if (!visited[r]) {
+                visited[r] = true;
+                queue.offer(new Node(r, commands + "R"));
             }
         }
-
     }
 }
