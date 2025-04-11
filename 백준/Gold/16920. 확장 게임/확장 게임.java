@@ -78,16 +78,20 @@ public class Main {
         while (true) {
             boolean canExpand = false; // 확장 가능 여부를 저장할 변수
 
-            // 1라운드: 모든 플레이어 확장
+            // 한 라운드씩 진행: 모든 플레이어 확장
             for (int p = 1; p <= P; p++) {
-                int limit = Si[p - 1];
-                Queue<Node> queue = newPlayers.getOrDefault(p, new LinkedList<>());
-                Queue<Node> nextQueue = new LinkedList<>();
+                int limit = Si[p - 1]; // 한 라운드에서 확장 가능한 칸수
+
+                Queue<Node> queue = newPlayers.getOrDefault(p, new LinkedList<>()); // 현재 플레이어의 성 좌표
+                Queue<Node> nextQueue = new LinkedList<>(); // 다음 라운드에서 사용할 큐
 
                 while (!queue.isEmpty()) {
                     Node cur = queue.poll();
 
+                    // 제한 칸수만큼 다 확장했으면,
+                    // 현재 큐에서는 작업을 멈추고
                     if (cur.depth == limit) {
+                        // 다음 라운드에서 사용할 큐에 추가
                         nextQueue.offer(new Node(cur.i, cur.j, 0));
                         continue;
                     }
@@ -103,10 +107,10 @@ public class Main {
                         }
                     }
                 }
-
-                newPlayers.put(p, nextQueue); // 다음 라운드 확장을 위해서 옮겨 담기
+                newPlayers.put(p, nextQueue); // 다음 라운드 확장을 위해서 갱신
             }
-            // 확장이 불가능하면 종료
+
+            // 확장이 한 번도 발생하지 않았다면 종료
             if (!canExpand) return;
         }
     }
