@@ -5,6 +5,7 @@ class Main {
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
+
         // N 입력
         int N = Integer.parseInt(br.readLine());
 
@@ -26,33 +27,27 @@ class Main {
             }
         }
 
-        // greedy - 가중치 내림차순으로 정렬
+        // greedy - 가중치 내림차순 정렬
         List<Character> chars = new ArrayList<>(weightMap.keySet());
-        chars.sort((a, b) -> Long.compare(weightMap.get(b), weightMap.get(a)));
+        chars.sort((a, b) -> Long.compare(weightMap.get(b), weightMap.get(a))); // 가중치 내림차순 정렬
 
-        // 핵심 로직: 10개 알파벳이 모두 사용되고, 가중치 최대인 것이 첫 번째 문자인 경우
-        if (chars.size() == 10 && firstChars.contains(chars.get(0))) {
-            // 첫 번째 문자가 아닌 것들 중에서 가중치가 가장 작은 것 찾기
-            Character zeroCandidate = null;
-            for (int i = chars.size() - 1; i >= 0; i--) {
-                if (!firstChars.contains(chars.get(i))) {
-                    zeroCandidate = chars.get(i);
+        // 10개 알파벳이 모두 사용된 경우: 반드시 0이 사용되므로 예외처리 필요!!
+        if (chars.size() == 10) {
+            for (int idx = chars.size() - 1; idx >= 0; idx--) { // 가중치 작은 것부터 확인
+                Character ch = chars.get(idx);
+                if (!firstChars.contains(ch)) { // 첫 번째 문자에 포함되지 않았다면
+                    chars.remove(ch); // 제거 후
+                    chars.add(ch); // 제일 뒤로 이동(가중치는 더 크지만 얘가 0을 할당 받을 예정)
                     break;
                 }
             }
-            
-            // 0으로 할당할 문자를 맨 뒤로 이동
-            if (zeroCandidate != null) {
-                chars.remove(zeroCandidate);
-                chars.add(zeroCandidate);
-            }
         }
 
-        // 9부터 차례로 할당하여 합 계산
+        // 주어진 순서대로 수(9->0)를 할당
         long ans = 0;
-        int digit = 9;
+        int allocateDigit = 9;
         for (Character ch : chars) {
-            ans += digit-- * weightMap.get(ch);
+            ans += allocateDigit-- * weightMap.get(ch);
         }
 
         // 출력
