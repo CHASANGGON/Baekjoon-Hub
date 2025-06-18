@@ -18,12 +18,11 @@ class Main {
             boolean[] used = new boolean[N + 1];
 
             // a, b 입력
-            int[][] arr = new int[M][3];
+            int[][] arr = new int[M][2];
             for (int i = 0; i < M; i++) {
                 st = new StringTokenizer(br.readLine());
                 arr[i][0] = Integer.parseInt(st.nextToken());
                 arr[i][1] = Integer.parseInt(st.nextToken());
-                arr[i][2] = arr[i][1] - arr[i][0] + 1; // length
             }
 
             // 정렬
